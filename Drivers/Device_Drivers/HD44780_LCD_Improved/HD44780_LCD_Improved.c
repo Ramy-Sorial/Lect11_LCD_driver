@@ -55,7 +55,8 @@
 
 void Alcd_Display(Alcd_t *lcd, uint8_t ON_OFF);
 
-static inline void Alcd_SendByte(Alcd_t *lcd, uint8_t CMD_Data, uint8_t value) {
+static inline void Alcd_SendByte(Alcd_t *lcd, uint8_t CMD_Data, uint8_t value)
+{
 	lcd->HW_Interface.RS_SET(CMD_Data);
 	// send the higher 4 bits
 	lcd->HW_Interface.Write_HalfByte(value >> 4);
@@ -67,7 +68,8 @@ static inline void Alcd_SendByte(Alcd_t *lcd, uint8_t CMD_Data, uint8_t value) {
 	;
 }
 
-void Alcd_Init(Alcd_t *lcd, uint8_t Lines, uint8_t Chars) {
+void Alcd_Init(Alcd_t *lcd, uint8_t Lines, uint8_t Chars)
+{
 	uint8_t x;
 
 	lcd->RowOffsets[0] = 0;
@@ -80,7 +82,8 @@ void Alcd_Init(Alcd_t *lcd, uint8_t Lines, uint8_t Chars) {
 	lcd->HW_Interface.usDelay(50000);
 
 	// init display in 4-bit mode
-	for (x = 0; x < 2; x++) {
+	for (x = 0; x < 2; x++)
+	{
 		lcd->HW_Interface.Write_HalfByte(0x03);
 		PulseEn
 		;
@@ -101,69 +104,82 @@ void Alcd_Init(Alcd_t *lcd, uint8_t Lines, uint8_t Chars) {
 	// lcd->_displaycontrol = LCD_DISPLAYON | LCD_CURSOROFF | LCD_BLINKOFF;
 
 	// turn on the display
-	Alcd_Display_Control(lcd, 1, 0, 0);
+	Alcd_Display_Control(lcd, LCD_DISP_ON, LCD_CURSOROFF, LCD_BLINKOFF);
 	Alcd_Clear(lcd);
 }
 
-void Alcd_CursorAt(Alcd_t *lcd, uint8_t Row, uint8_t Col) {
+void Alcd_CursorAt(Alcd_t *lcd, uint8_t Row, uint8_t Col)
+{
 	SendByte(0, LCD_SETDDRAMADDR | (Col + lcd->RowOffsets[Row]));
 }
 
-void Alcd_Put_n(Alcd_t *lcd, char *text, uint8_t len) {
-	for (uint8_t x = 0; x < len; x++) {
+void Alcd_Put_n(Alcd_t *lcd, char *text, uint8_t len)
+{
+	for (uint8_t x = 0; x < len; x++)
+	{
 		SendByte(1, *(text++));
 	}
 }
 
-void Alcd_PutAt_n(Alcd_t *lcd, uint8_t Row, uint8_t Col, char *text,
-		uint8_t len) {
+void Alcd_PutAt_n(Alcd_t *lcd, uint8_t Row, uint8_t Col, char *text, uint8_t len)
+{
 	Alcd_CursorAt(lcd, Row, Col);
 	Alcd_Put_n(lcd, text, len);
 }
 
-void Alcd_Home(Alcd_t *lcd) {
+void Alcd_Home(Alcd_t *lcd)
+{
 	SendByte(0, LCD_RETURNHOME);
 	lcd->HW_Interface.usDelay(2000);
 }
 
-void Alcd_Clear(Alcd_t *lcd) {
+void Alcd_Clear(Alcd_t *lcd)
+{
 	SendByte(0, LCD_CLEARDISPLAY);
 	lcd->HW_Interface.usDelay(2000);
 }
 
-void Alcd_Display_Control(Alcd_t *lcd, uint8_t ON_OFF, uint8_t CUR_ON_OFF,
-		uint8_t BLINK_ON_OFF) {
+void Alcd_Display_Control(Alcd_t *lcd, uint8_t ON_OFF, uint8_t CUR_ON_OFF, uint8_t BLINK_ON_OFF)
+{
 	lcd->_displaycontrol = 0;
-	if (ON_OFF) {
+	if (ON_OFF)
+	{
 		lcd->_displaycontrol |= LCD_DISPLAYON;
 	}
-	if (CUR_ON_OFF) {
+	if (CUR_ON_OFF)
+	{
 		lcd->_displaycontrol |= LCD_CURSORON;
 	}
-	if (BLINK_ON_OFF) {
+	if (BLINK_ON_OFF)
+	{
 		lcd->_displaycontrol |= LCD_BLINKON;
 	}
 	lcd->_displaycontrol |= LCD_DISPLAYON;
 	SendByte(0, LCD_DISPLAYCONTROL | lcd->_displaycontrol);
 }
 
-void Alcd_CreateChar(Alcd_t *lcd, uint8_t Location, uint8_t Map[]) {
+void Alcd_CreateChar(Alcd_t *lcd, uint8_t Location, uint8_t Map[])
+{
 	uint8_t x = 0;
 	// only 8 locations are
 	Location &= 7;
 	SendByte(0, LCD_SETCGRAMADDR | (Location << 3));
-	for (x = 0; x < 8; x++) {
+	for (x = 0; x < 8; x++)
+	{
 		SendByte(1, Map[x]);
 	}
 }
 
-void Alcd_PutChar(Alcd_t *lcd, char chr) {
+void Alcd_PutChar(Alcd_t *lcd, char chr)
+{
 	SendByte(1, chr);
 }
 
-int Str_Len(char *string) {
+int Str_Len(char *string)
+{
 	int len = 0;
-	while (*(string++)) {
+	while (*(string++))
+	{
 		len++;
 	}
 	return len;
