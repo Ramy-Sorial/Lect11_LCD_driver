@@ -30,9 +30,13 @@
 /* USER CODE BEGIN PTD */
 
 Alcd_t lcd =
-		{ .RS_GPIO = GPIOA, .RS_GPIO_Pin = GPIO_PIN_4, .EN_GPIO = GPIOA,
-				.EN_GPIO_Pin = GPIO_PIN_5, .Data_GPIO = GPIOA,
-				.Data_GPIO_Start_Pin = 0 };
+		{ 		.RS_GPIO = GPIOA,
+				.RS_GPIO_Pin = GPIO_PIN_4,
+				.EN_GPIO = GPIOA,
+				.EN_GPIO_Pin = GPIO_PIN_5,
+				.Data_GPIO = GPIOA,
+				.Data_GPIO_Start_Pin = 0
+		};
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
