@@ -53,7 +53,7 @@ void Alcd_PutChar(Alcd_t *lcd, char chr);
 
 int Str_Len(char *string);
 
-#define Alcd_Put(lcd, text) Alcd_PutAt_n(lcd, Row, Col, text, Str_Len(text))
+#define Alcd_Put(lcd, text) Alcd_Put_n(lcd, text, Str_Len(text))
 
 #define Alcd_PutAt(lcd, Row, Col, text) Alcd_PutAt_n(lcd, Row, Col, text, Str_Len(text))
 

@@ -36,6 +36,25 @@
 // flags for function set
 #define LCD_8BITMODE 0x10
 #define LCD_4BITMODE 0x00
+/*although some LCDs support 4-line options, the 2 extra lines are treated as extensions to the
+  first 2 lines in terms of memory location
+  for example:
+  for a 4x16 display:
+  - the address of the first character on line 1 is 0x00
+  - the address of the first character on line 2 is 0x40
+  - the address of the first character on line 3 is 0x00 + 16
+
+  Display Data RAM (DDRAM) Allocation for a 4x16 display
+  ------------------------------------------
+  |0x0									0x0f| --> Line 1
+  |0x40									0x4f| --> Line 2
+  |0x10									0x1f| --> Line 3
+  |0x50									0x5f| --> Line 4
+  ------------------------------------------
+
+  For this reason, we select 2 lines during initialization (which will mean that we will have 2 areas, 0x00 and 0x40)
+  The other option will be 1 line, which will mean that we will only have one area inside the DDRAM leaving only Line 1 and Line 3 (suitable only for 1-line display panels)
+*/
 #define LCD_2LINE 0x08
 #define LCD_1LINE 0x00
 #define LCD_5x10DOTS 0x04
